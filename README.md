@@ -1,5 +1,3 @@
-# soccer-match-tools
-
 # ⚽ Soccer Game Management
 
 A utility for managing soccer team logistics, including retrieving league schedules (e.g., YRSL), generating game sheets, and creating email communications for team rosters.
