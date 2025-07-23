@@ -1,0 +1,47 @@
+{
+  "team_info": {
+    "T1": {
+      "division": "Boys U9 (2016) Group A",
+      "team": "Vaughan T1 Bu9 GPA - BU9GPA",
+      "code": "T1"
+    },
+    "T2": {
+      "division": "Boys U9 (2016) Group B",
+      "team": "Vaughan T2 Bu9 GPB - BU9GPB",
+      "code": "T2"
+    },
+    "T3": {
+      "division": "Boys U9 (2016) Group B",
+      "team": "Vaughan T3 Bu9 GPB - BU9GPB",
+      "code": "T3"
+    },
+    "T4": {
+      "division": "Boys U9 (2016) Group C",
+      "team": "Vaughan T4 Bu9 GPC - BU9GPC",
+      "code": "T4"
+    }
+  },
+  "email_contacts": {
+    "coaches": [
+      {
+        "name": "First Last",
+        "email": "coach@example.com"
+      }
+    ],
+    "managers": [
+      {
+        "name": "Manager One",
+        "email": "manager1@example.com"
+      },
+      {
+        "name": "Manager Two",
+        "email": "manager2@example.com"
+      }
+    ]
+  },
+  "uniforms": {
+    "home": "Navy Jersey, Navy Shorts and Navy socks with VSC branding",
+    "away": "White Jersey, Red Shorts with number on them, White socks with VSC branding"
+  },
+  "filter": "This Week"
+}
