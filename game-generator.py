@@ -20,6 +20,8 @@ from tabulate import tabulate
 
 def create_driver():
     options = webdriver.ChromeOptions()
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--ignore-ssl-errors")
     return webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()), options=options)
 
 def login(driver, email, password):
@@ -50,7 +52,11 @@ def select_roster(driver, players):
             found_players.add(label)
             checkbox = div.find_element(By.TAG_NAME, "input")
             if not checkbox.is_selected():
+                driver.execute_script("arguments[0].scrollIntoView(true);", checkbox)
+                time.sleep(0.5)
                 checkbox.click()
+                
+                
 
     missing = player_set - found_players
     if missing:
@@ -60,7 +66,22 @@ def select_roster(driver, players):
 def generate_gamesheet(driver):
     wait = WebDriverWait(driver, 10)
     generate_btn = wait.until(EC.element_to_be_clickable((By.ID, "btnSubmit")))
-    generate_btn.click()
+    
+    # Try standard click first
+    try:
+        # Scroll the element into view using JavaScript + offsets
+        driver.execute_script("""
+            arguments[0].scrollIntoView({block: 'center', inline: 'center'});
+            window.scrollBy(0, -150); // adjust scroll to account for sticky headers
+        """, generate_btn)
+        time.sleep(0.5)  # Give time for scroll animation/rendering
+
+        generate_btn.click()
+    except Exception as e:
+        print(f"⚠️ Standard click failed: {e}")
+        print("✅ Retrying using JavaScript click.")
+        driver.execute_script("arguments[0].click();", generate_btn)
+
     print("📄 Gamesheet opened in new tab. Please download manually.")
 
 
@@ -231,7 +252,9 @@ if args.roster:
 if args.mode == 'generate-game-list' or args.mode == 'generate-email':
 
     options = webdriver.ChromeOptions()
-    options.add_argument('--headless')
+    options.add_argument('--headless=new')
+    options.add_argument("--ignore-certificate-errors")
+    options.add_argument("--ignore-ssl-errors")
 
     games_list = []
 
