@@ -105,12 +105,8 @@ def generate_schedule_email_html_with_subject(games_list, rosters):
             games_by_team[code] = game
             game_dates.add(game['Date'])
 
-    # ✅ Validate all games are on the same date
-    if len(game_dates) != 1:
-        raise ValueError(f"Expected all games on one date, but found multiple: {', '.join(game_dates)}")
 
-    game_date = next(iter(game_dates))  # safely get the single date
-    subject = f"Vaughan SC U9 Boys Game Thursday {game_date}"
+    subject = f"Vaughan SC U9 Boys Game ({game_dates})"
 
     email = []
 
@@ -129,7 +125,7 @@ def generate_schedule_email_html_with_subject(games_list, rosters):
     )
 
     email.append(
-    f"<p>Please note the rosters for Thursday's games below. If you are unable to attend, "
+    f"<p>Please note the rosters for this week's games below. If you are unable to attend, "
     f"please email {coach_text} or you can contact your team managers {manager_text}.</p>"
 )
     email.append("<p><b>Arrival Time:</b> Players should be at the field 30 minutes prior to kick-off and bring both sets of jerseys (White and Navy).</p>")
