@@ -14,10 +14,27 @@ import json
 import argparse
 from cryptography.fernet import Fernet
 from tabulate import tabulate
+from datetime import datetime
 
 
 
 
+def format_date_with_day(date_str):
+    # Use current year for parsing
+    current_year = datetime.now().year
+    full_date_str = f"{date_str} {current_year}"
+
+    try:
+        # Parse the full date
+        date_obj = datetime.strptime(full_date_str, "%b %d %Y")
+        
+        # Format: "Wednesday, Sep 18"
+        formatted_date = date_obj.strftime("%A, %b %d")
+        return formatted_date
+
+    except ValueError:
+        return "Invalid date format. Use 'Sep 18' format."
+    
 def create_driver():
     options = webdriver.ChromeOptions()
     options.add_argument("--ignore-certificate-errors")
@@ -105,8 +122,8 @@ def generate_schedule_email_html_with_subject(games_list, rosters):
             games_by_team[code] = game
             game_dates.add(game['Date'])
 
-
-    subject = f"Vaughan SC U9 Boys Game ({game_dates})"
+    sorted_date_str = date_str = ", ".join(sorted(game_dates))
+    subject = f"Vaughan SC U9 Boys Game ({sorted_date_str})"
 
     email = []
 
@@ -145,7 +162,7 @@ def generate_schedule_email_html_with_subject(games_list, rosters):
 
         email.append("<table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse;'>"
                      "<tr><th>Date</th><th>KO</th><th>Field</th><th>Home</th><th>Away</th></tr>")
-        email.append(f"<tr><td>{game['Date']}</td><td>{game['Time']}</td><td><a href='{game['FieldLink']}' target='_blank'>{game['Field']}</a></td><td>{game['Home']}</td><td>{game['Away']}</td></tr>")
+        email.append(f"<tr><td>{format_date_with_day(game['Date'])}</td><td>{game['Time']}</td><td><a href='{game['FieldLink']}' target='_blank'>{game['Field']}</a></td><td>{game['Home']}</td><td>{game['Away']}</td></tr>")
         email.append("</table><br>")
 
         email.append(f"<h4>{code} Roster</h4>")
